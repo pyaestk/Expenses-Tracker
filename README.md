@@ -37,4 +37,3 @@ A modern, feature-rich Android application built with **Kotlin** and **Jetpack C
 * **Async Programming**: Kotlin Coroutines & Flow
 * **Navigation**: Jetpack Compose Navigation
 
-## 📂 Project Structure
