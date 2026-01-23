@@ -218,7 +218,7 @@ fun AddExpenseScreen(
             }
 
             // 5. SAVE BUTTON
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(32.dp))
             Button(
                 onClick = {
                     viewModel.saveTransaction(

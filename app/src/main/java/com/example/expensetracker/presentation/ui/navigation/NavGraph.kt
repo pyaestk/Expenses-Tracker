@@ -1,5 +1,7 @@
 package com.example.expensetracker.ui.navigation
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,7 +34,12 @@ fun ExpenseTrackerNavGraph(
         navController = navController,
         startDestination = Screen.Home.route
     ) {
-        composable(Screen.Home.route) {
+        composable(Screen.Home.route,
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
+        ) {
             HomeScreen(
                 onAddExpenseClick = { navController.navigate(Screen.AddExpense.route) },
                 onSeeAllClick = { navController.navigate("transactions") },
@@ -52,18 +59,32 @@ fun ExpenseTrackerNavGraph(
 
         composable(
             route = "transaction_detail/{transactionId}",
-            arguments = listOf(navArgument("transactionId") { type = NavType.IntType })
+            arguments = listOf(navArgument("transactionId") { type = NavType.IntType }),
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
         ) {
             TransactionDetailScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.AddExpense.route) {
+        composable(Screen.AddExpense.route,
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
+        ) {
             AddExpenseScreen(onBackClick = { navController.popBackStack() })
         }
 
-        composable("transactions") {
+        composable("transactions",
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
+        ) {
             TransactionListScreen(
                 onBackClick = { navController.popBackStack() },
                 onTransactionClick = { transactionId ->
@@ -73,7 +94,12 @@ fun ExpenseTrackerNavGraph(
             )
         }
 
-        composable(Screen.Budget.route) {
+        composable(Screen.Budget.route,
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
+        ) {
             BudgetPlannerScreen(
                 onBudgetClick = { id -> navController.navigate(Screen.BudgetDetail.createRoute(id)) }
             )
@@ -81,12 +107,20 @@ fun ExpenseTrackerNavGraph(
 
         composable(
             route = Screen.BudgetDetail.route,
-            arguments = listOf(navArgument("budgetId") { type = NavType.IntType })
+            arguments = listOf(navArgument("budgetId") { type = NavType.IntType }),
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
         ) {
             BudgetDetailScreen(onBackClick = { navController.popBackStack() })
         }
 
-        composable(Screen.Analytics.route) {
+        composable(Screen.Analytics.route,
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }) {
             val viewModel: AnalyticsViewModel = koinViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -105,13 +139,21 @@ fun ExpenseTrackerNavGraph(
             )
         }
 
-        composable(Screen.Settings.route) {
+        composable(Screen.Settings.route,
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }) {
             SettingsScreen()
         }
 
         composable(
             route = Screen.CategoryExpenses.route,
-            arguments = listOf(navArgument("categoryName") { type = NavType.StringType })
+            arguments = listOf(navArgument("categoryName") { type = NavType.StringType }),
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
         ) {
             CategoryExpensesScreen(
                 onBackClick = { navController.popBackStack() },
@@ -126,7 +168,11 @@ fun ExpenseTrackerNavGraph(
                 navArgument("startDate") { type = NavType.LongType },
                 navArgument("endDate") { type = NavType.LongType },
                 navArgument("monthName") { type = NavType.StringType }
-            )
+            ),
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }
         ) {
             AnalyticsDetailScreen(
                 onBackClick = { navController.popBackStack() },
@@ -136,7 +182,11 @@ fun ExpenseTrackerNavGraph(
             )
         }
 
-        composable(Screen.Search.route) {
+        composable(Screen.Search.route,
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() },
+            popEnterTransition = { fadeIn() },
+            popExitTransition = { fadeOut() }) {
             SearchScreen(
                 onBackClick = { navController.popBackStack() },
                 onTransactionClick = { id -> navController.navigate("transaction_detail/$id") }

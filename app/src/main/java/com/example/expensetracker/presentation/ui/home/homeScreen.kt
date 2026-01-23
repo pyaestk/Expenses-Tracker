@@ -72,7 +72,7 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
-        // =Prevent double padding by excluding the bottom navigation bar inset
+        // Prevent double padding by excluding the bottom navigation bar inset
         // because MainActivity already handles the bottom spacing.
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(WindowInsets.navigationBars),
 
@@ -153,9 +153,21 @@ fun HomeScreen(
             }
 
             // 4. Transaction List
-            items(uiState.recentTransactions) { transaction ->
-                TransactionItem(transaction = transaction, onClick = { onTransactionClick(transaction.id) })
+            if (uiState.recentTransactions.isEmpty()) {
+                item {
+                    Box(modifier = Modifier.fillMaxSize()
+                        .padding(vertical = 24.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("No recent transactions", color = Color.Gray)
+                    }
+                }
+            } else {
+                items(uiState.recentTransactions) { transaction ->
+                    TransactionItem(transaction = transaction, onClick = { onTransactionClick(transaction.id) })
+                }
             }
+
         }
     }
 }
@@ -329,6 +341,7 @@ fun CategorySection(
 
 @Composable
 fun TransactionItem(transaction: TransactionModel, onClick: () -> Unit = {}) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()

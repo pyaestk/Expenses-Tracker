@@ -5,6 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -18,7 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.expensetracker.presentation.ui.navigation.BottomNavItem
 import com.example.expensetracker.presentation.ui.navigation.BottomNavigationBar
 import com.example.expensetracker.presentation.ui.setting.AppThemeMode
 import com.example.expensetracker.presentation.ui.setting.SettingsViewModel
@@ -53,11 +58,35 @@ class MainActivity : ComponentActivity() {
 
             ExpenseTrackerTheme(darkTheme = isDarkTheme) {
                 val navController = rememberNavController()
+
+                val items = listOf(
+                    BottomNavItem.Home,
+                    BottomNavItem.Analytics,
+                    BottomNavItem.Budget,
+                    BottomNavItem.Settings
+                )
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+
+                val showBottomBar = items.any { it.route == currentRoute }
+
                 Scaffold(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background),
-                    bottomBar = { BottomNavigationBar(navController = navController) }
+                    bottomBar = {
+                        AnimatedVisibility(
+                            visible = showBottomBar,
+                            enter = slideInVertically { it },
+                            exit = slideOutVertically { it }
+                        ){
+                            BottomNavigationBar(
+                                items,
+                                currentRoute,
+                                navController
+                            )
+                        }
+                    }
                 ) { paddingValues ->
                     Box(modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding())) {
                         ExpenseTrackerNavGraph(navController = navController)
