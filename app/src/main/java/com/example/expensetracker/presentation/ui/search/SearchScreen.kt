@@ -1,5 +1,6 @@
 package com.example.expensetracker.presentation.ui.search
 
+import TransactionItem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.expensetracker.domain.repository.model.CategoryConstants
-import com.example.expensetracker.presentation.ui.home.TransactionItem
 import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
 

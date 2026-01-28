@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.rounded.ArrowDownward
 import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material3.Card
@@ -33,6 +34,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +49,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.domain.repository.model.TransactionModel
 import com.example.expensetracker.ui.theme.Shapes
-
 @Composable
 fun BalanceCard(
     totalBalance: String,
@@ -51,12 +56,13 @@ fun BalanceCard(
     expense: String,
     modifier: Modifier = Modifier
 ) {
+    var isBalanceVisible by rememberSaveable { mutableStateOf(false) }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(220.dp),
         shape = Shapes.large,
-        // Uses 'primary' from your Theme.kt (BluePrimary or BluePrimaryDark)
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
@@ -66,48 +72,57 @@ fun BalanceCard(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // Top Section: Balance
+
             Column {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "Total Balance",
-                        // Keep White for contrast against Blue background
                         color = MaterialTheme.colorScheme.background.copy(alpha = 0.8f),
                         style = MaterialTheme.typography.titleMedium
                     )
+
                     Icon(
-                        imageVector = Icons.Default.Visibility,
-                        contentDescription = "Show Balance",
-                        tint = MaterialTheme.colorScheme.background
+                        imageVector = if (isBalanceVisible)
+                            Icons.Default.Visibility
+                        else
+                            Icons.Default.VisibilityOff,
+                        contentDescription = "Toggle Balance",
+                        tint = MaterialTheme.colorScheme.background,
+                        modifier = Modifier
+                            .clickable { isBalanceVisible = !isBalanceVisible }
                     )
                 }
+
                 Spacer(modifier = Modifier.height(8.dp))
+
                 Text(
-                    text = totalBalance,
+                    text = if (isBalanceVisible) totalBalance else "****",
                     color = MaterialTheme.colorScheme.background,
                     style = MaterialTheme.typography.displayLarge
                 )
             }
 
-            // Bottom Section: Income vs Expense Row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 FinanceBadge(
                     label = "Income",
-                    amount = income,
+                    amount = if (isBalanceVisible) income else "****",
                     icon = Icons.Rounded.ArrowDownward,
                     modifier = Modifier.weight(1f),
-                    color = Color.Blue,
+                    color = Color.Blue
                 )
+
                 Spacer(modifier = Modifier.width(16.dp))
+
                 FinanceBadge(
                     label = "Expense",
-                    amount = expense,
+                    amount = if (isBalanceVisible) expense else "****",
                     icon = Icons.Rounded.ArrowUpward,
                     modifier = Modifier.weight(1f),
                     color = Color.Red
@@ -116,6 +131,7 @@ fun BalanceCard(
         }
     }
 }
+
 
 @Composable
 fun FinanceBadge(

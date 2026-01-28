@@ -1,6 +1,9 @@
 package com.example.expensetracker.presentation.ui.home
 
+import BalanceCard
+import CategorySection
 import HomeViewModel
+import TransactionItem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +24,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -81,7 +85,7 @@ fun HomeScreen(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 title = {
                     Column {
-                        Text(text = "Expense Tracker", style = MaterialTheme.typography.headlineMedium)
+                        Text(text = "Overview", style = MaterialTheme.typography.headlineMedium)
                     }
                 },
                 actions = {
@@ -111,10 +115,10 @@ fun HomeScreen(
         floatingActionButtonPosition = FabPosition.End
     ) { paddingValues ->
         LazyColumn(
+            state = rememberLazyListState(),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            // Keep this to allow scrolling behind the FAB
             contentPadding = PaddingValues(bottom = 80.dp)
         ) {
             // 1. Balance Card Section
@@ -173,218 +177,3 @@ fun HomeScreen(
 }
 
 
-@Composable
-fun BalanceCard(
-    totalBalance: String,
-    income: String,
-    expense: String,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(220.dp),
-        shape = Shapes.large,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(24.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            // Top Section: Balance
-            Column {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "Total Balance",
-                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Icon(
-                        imageVector = Icons.Default.Visibility,
-                        contentDescription = "Show Balance",
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = totalBalance,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    style = MaterialTheme.typography.displayLarge
-                )
-            }
-
-            // Bottom Section: Income vs Expense Row
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                FinanceBadge(
-                    label = "Income",
-                    amount = income,
-                    icon = Icons.Rounded.ArrowDownward,
-                    modifier = Modifier.weight(1f),
-                    color = Color.Blue, // Consider using Theme colors here if preferred
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                FinanceBadge(
-                    label = "Expense",
-                    amount = expense,
-                    icon = Icons.Rounded.ArrowUpward,
-                    modifier = Modifier.weight(1f),
-                    color = Color.Red
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun FinanceBadge(
-    label: String,
-    amount: String,
-    icon: ImageVector,
-    modifier: Modifier = Modifier,
-    color: Color
-) {
-    Row(
-        modifier = modifier
-            .background(Color.White.copy(alpha = 0.2f), RoundedCornerShape(12.dp))
-            .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(32.dp)
-                .background(Color.White.copy(alpha = 0.2f), CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = color, // Keep the Red/Blue distinction for badges
-                modifier = Modifier.size(16.dp)
-            )
-        }
-        Spacer(modifier = Modifier.width(12.dp))
-        Column {
-            Text(
-                text = label,
-                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
-                fontSize = 12.sp
-            )
-            Text(
-                text = amount,
-                color = MaterialTheme.colorScheme.onPrimary,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp
-            )
-        }
-    }
-}
-
-@Composable
-fun CategorySection(
-    onManageClick: () -> Unit,
-    onCategoryClick: (String) -> Unit
-) {
-
-    val categories = CategoryConstants.expenseCategories
-
-    Column(modifier = Modifier.padding(vertical = 16.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "Categories", style = MaterialTheme.typography.headlineMedium)
-//            TextButton(onClick = onManageClick) {
-//                Text("See All", color = MaterialTheme.colorScheme.primary)
-//            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(categories) { category ->
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(
-                        modifier = Modifier
-                            .size(64.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(category.backgroundColor)
-                            .clickable { onCategoryClick(category.name) },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = category.icon,
-                            contentDescription = category.name,
-                            tint = category.color,
-                            modifier = Modifier.size(32.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = category.name, style = MaterialTheme.typography.bodyMedium)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun TransactionItem(transaction: TransactionModel, onClick: () -> Unit = {}) {
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(vertical = 12.dp, horizontal = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // Icon Box
-        Box(
-            modifier = Modifier
-                .size(50.dp)
-                .clip(RoundedCornerShape(12.dp)),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = transaction.icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(24.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        // Title & Date
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = transaction.title,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Text(
-                text = transaction.date,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-
-        // Amount
-        Text(
-            text = transaction.amount,
-            style = MaterialTheme.typography.titleMedium,
-            color = transaction.color
-        )
-    }
-}

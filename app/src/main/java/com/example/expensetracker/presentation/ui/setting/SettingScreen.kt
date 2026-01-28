@@ -111,7 +111,7 @@ fun SettingsScreen(
                 SettingsItem(
                     icon = Icons.Default.Info,
                     title = "About App",
-                    value = "Expense Tracker",
+                    value = "SaveIt - Expense Tracker",
                     onClick = { }
                 )
                 Divider(

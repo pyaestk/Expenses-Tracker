@@ -1,0 +1,56 @@
+========================================================================
+                      EXPENSE TRACKER ANDROID APP
+========================================================================
+
+PROJECT OVERVIEW
+----------------
+This is a modern Android application built using Kotlin and Jetpack Compose.
+It allows users to track their daily income and expenses, set monthly budgets,
+view spending analytics, and manage their personal finances efficiently.
+
+The app uses a local database (Room) to store data, ensuring it works
+completely offline.
+
+KEY FEATURES
+------------
+1. Dashboard:
+   - View Total Balance, Total Income, and Total Expense.
+   - Quick access to recent transactions.
+
+2. Transaction Management:
+   - Add Income or Expense.
+   - Select categories (Food, Travel, Bills, etc.).
+   - Add notes and select specific dates.
+
+3. Analytics:
+   - Monthly breakdown of spending.
+   - Donut chart visualization for category-wise expenses.
+   - Deep dive into specific category transactions per month.
+
+4. Budget Planner:
+   - Set monthly spending limits for specific categories.
+   - Visual progress bars showing "Spent vs. Limit".
+   - Alerts for over-budget categories.
+
+5. Search & Filter:
+   - Search transactions by title or note.
+   - Filter by Type (Income/Expense), Date (Last 7 days, 30 days), and Category.
+   - Sort by Newest, Oldest, Highest Amount, or Lowest Amount.
+
+6. Settings & Customization:
+   - Dark Mode / Light Mode toggle (System default supported).
+   - Dynamic Currency Symbol selection ($, €, £, ¥, etc.).
+
+------------------------------------------------------------------------
+
+TECHNICAL STACK
+---------------
+- Language: Kotlin
+- UI Framework: Jetpack Compose (Material3)
+- Architecture: MVVM (Model-View-ViewModel) with Clean Architecture
+- Database: Room Database (SQLite)
+- Dependency Injection: Koin
+- Asynchronous Programming: Kotlin Coroutines & Flow
+- Navigation: Jetpack Compose Navigation
+
+------------------------------------------------------------------------
