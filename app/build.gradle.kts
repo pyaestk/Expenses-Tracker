@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.expensetracker"
+    namespace = "com.example.saveit"
     compileSdk {
         version = release(36)
     }
