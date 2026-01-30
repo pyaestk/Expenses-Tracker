@@ -52,6 +52,10 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE category = :category AND date BETWEEN :startDate AND :endDate ORDER BY date DESC")
     fun getTransactionsByCategoryAndDate(category: String, startDate: Long, endDate: Long): Flow<List<TransactionEntity>>
+
+    // Add this new query
+    @Query("SELECT * FROM transactions WHERE category = :category AND type = :type ORDER BY date DESC")
+    fun getTransactionsByCategoryAndType(category: String, type: String): Flow<List<TransactionEntity>>
 }
 
 // Helper class for the Analytics Query

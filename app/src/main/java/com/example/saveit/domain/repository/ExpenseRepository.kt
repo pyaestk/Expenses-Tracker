@@ -30,4 +30,7 @@ interface ExpenseRepository {
     fun getTransactionsByCategory(category: String): Flow<List<TransactionEntity>>
 
     fun getTransactionsByCategoryAndDate(category: String, startDate: Long, endDate: Long): Flow<List<TransactionEntity>>
+
+    // Add to interface
+    fun getTransactionsByCategoryAndType(category: String, type: String): Flow<List<TransactionEntity>>
 }

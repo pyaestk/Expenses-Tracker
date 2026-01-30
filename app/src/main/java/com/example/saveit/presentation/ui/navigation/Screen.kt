@@ -12,8 +12,8 @@ sealed class Screen(val route: String) {
         fun createRoute(id: Int) = "budget_detail/$id"
     }
 
-    object CategoryExpenses : Screen("category_expenses/{categoryName}") {
-        fun createRoute(categoryName: String) = "category_expenses/$categoryName"
+    object CategoryExpenses : Screen("category_expenses/{categoryName}/{transactionType}") {
+        fun createRoute(categoryName: String, type: String) = "category_expenses/$categoryName/$type"
     }
     object AnalyticsDetail : Screen("analytics_detail/{categoryName}/{startDate}/{endDate}/{monthName}") {
         fun createRoute(category: String, start: Long, end: Long, month: String) =

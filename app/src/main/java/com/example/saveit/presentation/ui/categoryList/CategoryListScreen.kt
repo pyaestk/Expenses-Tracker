@@ -27,7 +27,7 @@ import com.example.saveit.domain.repository.model.CategoryConstants
 @Composable
 fun CategoryListScreen(
     onBackClick: () -> Unit,
-    onCategoryClick: (String) -> Unit
+    onCategoryClick: (String, String) -> Unit
 ) {
     val expenseCategories = CategoryConstants.expenseCategories
     val incomeCategories = CategoryConstants.incomeCategories
@@ -63,7 +63,10 @@ fun CategoryListScreen(
 
             // 2. Expense Items
             items(expenseCategories) { category ->
-                CategoryGridItem(category = category, onClick = { onCategoryClick(category.name) })
+                CategoryGridItem(
+                    category = category,
+                    onClick = { onCategoryClick(category.name, "EXPENSE") }
+                )
             }
 
             // 3. Spacer
@@ -78,7 +81,10 @@ fun CategoryListScreen(
 
             // 5. Income Items
             items(incomeCategories) { category ->
-                CategoryGridItem(category = category, onClick = { onCategoryClick(category.name) })
+                CategoryGridItem(
+                    category = category,
+                    onClick = { onCategoryClick(category.name, "INCOME") }
+                )
             }
         }
     }

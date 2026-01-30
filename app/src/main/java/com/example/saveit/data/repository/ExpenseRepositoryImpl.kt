@@ -59,4 +59,8 @@ class ExpenseRepositoryImpl(
     override fun getTransactionsByCategoryAndDate(category: String, startDate: Long, endDate: Long): Flow<List<TransactionEntity>> {
         return transactionDao.getTransactionsByCategoryAndDate(category, startDate, endDate)
     }
+
+    override fun getTransactionsByCategoryAndType(category: String, type: String): Flow<List<TransactionEntity>> {
+        return transactionDao.getTransactionsByCategoryAndType(category, type)
+    }
 }

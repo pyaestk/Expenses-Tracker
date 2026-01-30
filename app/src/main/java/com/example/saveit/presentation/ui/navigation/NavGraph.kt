@@ -48,11 +48,7 @@ fun ExpenseTrackerNavGraph(
                     navController.navigate("transaction_detail/$transactionId")
                 },
                 onCategoryClick = { category ->
-                    navController.navigate(
-                        Screen.CategoryExpenses.createRoute(
-                            category
-                        )
-                    )
+                    navController.navigate(Screen.CategoryExpenses.createRoute(category, "EXPENSE"))
                 },
                 onSearchClick = { navController.navigate(Screen.Search.route) },
                 onManageCategoryClick = { navController.navigate(Screen.CategoryList.route) }
@@ -151,11 +147,10 @@ fun ExpenseTrackerNavGraph(
 
         composable(
             route = Screen.CategoryExpenses.route,
-            arguments = listOf(navArgument("categoryName") { type = NavType.StringType }),
-            enterTransition = { fadeIn() },
-            exitTransition = { fadeOut() },
-            popEnterTransition = { fadeIn() },
-            popExitTransition = { fadeOut() }
+            arguments = listOf(
+                navArgument("categoryName") { type = NavType.StringType },
+                navArgument("transactionType") { type = NavType.StringType } // <--- Add this
+            )
         ) {
             CategoryExpensesScreen(
                 onBackClick = { navController.popBackStack() },
@@ -198,8 +193,8 @@ fun ExpenseTrackerNavGraph(
         composable(Screen.CategoryList.route) {
             CategoryListScreen(
                 onBackClick = { navController.popBackStack() },
-                onCategoryClick = { category ->
-                    navController.navigate(Screen.CategoryExpenses.createRoute(category))
+                onCategoryClick = { category, type ->
+                    navController.navigate(Screen.CategoryExpenses.createRoute(category, type))
                 }
             )
         }

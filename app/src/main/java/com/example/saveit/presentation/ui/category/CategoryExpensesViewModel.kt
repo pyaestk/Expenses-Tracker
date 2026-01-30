@@ -18,6 +18,7 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+// ... imports
 
 class CategoryExpensesViewModel(
     savedStateHandle: SavedStateHandle,
@@ -25,11 +26,13 @@ class CategoryExpensesViewModel(
     userPreferences: UserPreferencesRepository
 ) : ViewModel() {
 
-    // Get the category passed via navigation
     val categoryName: String = checkNotNull(savedStateHandle["categoryName"])
+    // 1. Get the Type (EXPENSE or INCOME)
+    val transactionType: String = checkNotNull(savedStateHandle["transactionType"])
 
+    // 2. Use the new Repository function
     val transactions: StateFlow<List<TransactionModel>> = combine(
-        repository.getTransactionsByCategory(categoryName),
+        repository.getTransactionsByCategoryAndType(categoryName, transactionType),
         userPreferences.currencySymbol
     ) { entities, symbol ->
         entities.map { entity ->
@@ -48,9 +51,7 @@ class CategoryExpensesViewModel(
                 date = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Date(entity.date)),
                 amount = finalAmount,
                 color = if (isExpense) RedExpense else GreenIncome,
-                icon = config.icon,
-                // Ensure TransactionUiModel has this field if you use it in UI, otherwise remove
-                // iconBgColor = config.backgroundColor
+                icon = config.icon
             )
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
