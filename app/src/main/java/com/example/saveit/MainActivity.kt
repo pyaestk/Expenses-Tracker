@@ -19,6 +19,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -88,7 +89,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { paddingValues ->
-                    Box(modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding())) {
+                    Box(modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding(), top = 8.dp)) {
                         ExpenseTrackerNavGraph(navController = navController)
                     }
                 }

@@ -1,5 +1,6 @@
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,6 +47,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.saveit.domain.repository.model.CategoryConstants
 import com.example.saveit.domain.repository.model.TransactionModel
 import com.example.saveit.ui.theme.Shapes
 @Composable
@@ -180,17 +182,10 @@ fun FinanceBadge(
 @Composable
 fun CategorySection(onManageClick: () -> Unit, onCategoryClick: (String) -> Unit)
 {
-    val categories = listOf(
-        CategoryModel("Food", Icons.Default.Fastfood, Color(0xFFFF9800), Color(0xFFFFF3E0)),
-        CategoryModel("Travel", Icons.Default.DirectionsCar, Color(0xFF2196F3), Color(0xFFE3F2FD)),
-        CategoryModel("Shop", Icons.Default.ShoppingBag, Color(0xFF9C27B0), Color(0xFFF3E5F5)),
-        CategoryModel("Bills", Icons.Default.Bolt, Color(0xFF009688), Color(0xFFE0F2F1)),
-        CategoryModel("Health", Icons.Default.MedicalServices, Color(0xFFF44336), Color(0xFFFFEBEE))
-    )
 
     Column(modifier = Modifier.padding(vertical = 16.dp)) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+            modifier = Modifier.fillMaxWidth().padding(start = 24.dp, end = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -206,14 +201,15 @@ fun CategorySection(onManageClick: () -> Unit, onCategoryClick: (String) -> Unit
             contentPadding = PaddingValues(horizontal = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(categories) { category ->
+            items(CategoryConstants.expenseCategories) { category ->
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Box(
                         modifier = Modifier
                             .size(64.dp)
                             .clip(RoundedCornerShape(16.dp))
                             .background(category.backgroundColor)
-                            .clickable { onCategoryClick(category.name) },
+                            .clickable { onCategoryClick(category.name) }
+                            .border(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f), RoundedCornerShape(16.dp)),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(

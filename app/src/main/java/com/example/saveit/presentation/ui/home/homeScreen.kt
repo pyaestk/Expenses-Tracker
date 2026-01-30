@@ -52,6 +52,7 @@ fun HomeScreen(
     onSearchClick: () -> Unit,
     onTransactionClick: (Int) -> Unit,
     onCategoryClick: (String) -> Unit,
+    onManageCategoryClick: () -> Unit,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
 
@@ -117,7 +118,7 @@ fun HomeScreen(
             // 2. Categories Section
             item {
                 CategorySection(
-                    onManageClick = { },
+                    onManageClick = onManageCategoryClick,
                     onCategoryClick = onCategoryClick
                 )
             }
@@ -127,7 +128,8 @@ fun HomeScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp, vertical = 8.dp),
+                        .padding(vertical = 8.dp)
+                        .padding(start = 24.dp, end = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {

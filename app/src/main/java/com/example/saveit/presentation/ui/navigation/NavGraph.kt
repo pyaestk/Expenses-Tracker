@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.expensetracker.presentation.ui.category_list.CategoryListScreen
 import com.example.saveit.presentation.ui.add_expense.AddExpenseScreen
 import com.example.saveit.presentation.ui.analytics.AnalyticsScreen
 import com.example.saveit.presentation.ui.analytics.AnalyticsViewModel
@@ -53,7 +54,8 @@ fun ExpenseTrackerNavGraph(
                         )
                     )
                 },
-                onSearchClick = { navController.navigate(Screen.Search.route) }
+                onSearchClick = { navController.navigate(Screen.Search.route) },
+                onManageCategoryClick = { navController.navigate(Screen.CategoryList.route) }
             )
         }
 
@@ -190,6 +192,15 @@ fun ExpenseTrackerNavGraph(
             SearchScreen(
                 onBackClick = { navController.popBackStack() },
                 onTransactionClick = { id -> navController.navigate("transaction_detail/$id") }
+            )
+        }
+
+        composable(Screen.CategoryList.route) {
+            CategoryListScreen(
+                onBackClick = { navController.popBackStack() },
+                onCategoryClick = { category ->
+                    navController.navigate(Screen.CategoryExpenses.createRoute(category))
+                }
             )
         }
     }
